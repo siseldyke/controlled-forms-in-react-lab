@@ -8,46 +8,46 @@ const [books, setBooks] = useState([
   const [newBook, setNewBook] = useState({
     title: '',
     author:''
-  }
-
-  )
-
+  })
+ 
   const handleInputChange =(event) =>{
-     const {name, value} = event.target
-    setNewBook(event.target.name)
-}
-
-const handleSubmit = (event) => {
+    const {name , value} = event.target
+    setNewBook((prevNewBooks) => ({
+      ...prevNewBooks, [name] : value
+    }))
+    console.log(newBook)
+  }
+  const handleSubmit = (event) => {
     event.preventDefault();
-    props.addBook(newBook)
-    setNewBook(book)
+    setBooks((previousBooks) => [
+      ...previousBooks, newBook
+      ])
+    setNewBook({title: '', author:''})
+    console.log(books)
   };
 
-  const addBook =(newBook) =>{
-    const updatedBooks = [...books, newBook]
-    setBooks(updatedBooks)
-    console.log(updatedBooks)
-  }
   
-return(
+  
+  
+return (
 <div className="bookshelfDiv">
   <div className="formDiv">
     <h3>Add a Book</h3>
-    <NewBook addBook ={addBook}/>
     <form onSubmit={handleSubmit}>
         <label htmlFor="titleInput">Title: </label>
         <input 
         type="text"
         id="id" 
-        name="name"
+        name="title"
         value={newBook.title}
         onChange={handleInputChange}
         />
+        
         <label htmlFor="authorInput">Author: </label>
         <input 
         type="text"
         id="id" 
-        name="name"
+        name="author"
         value={newBook.author}
         onChange={handleInputChange}
         />
@@ -55,14 +55,22 @@ return(
       </form>
   </div>
   <div className="bookCardsDiv">
-    <ul>
-        {books.map((title, author)=>
-    <Bookshelf books ={books}/>
-)}
-    </ul>
-    </div>
+      <ul>
+        {books.map((book , index) => (
+          <li key = {index}>
+            <p>
+            Title: {book.title}
+            </p>
+            <p>
+             Author:  {book.author}
+            </p>
+            </li>
+          
+        ) )}
+        
+      </ul>
+  </div>
 </div>
-    )
-}
+)}
 
 export default Bookshelf;
